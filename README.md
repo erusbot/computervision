@@ -13,7 +13,6 @@ sudo apt-get install cmake
 ### Compile:
 
 ```sh
-cd rpi
 mkdir build
 cd build
 cmake ..
