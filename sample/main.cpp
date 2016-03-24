@@ -55,14 +55,22 @@ int main( int argc, char** argv )
     canal2 = channels[1];
     canal3 = channels[2];
 
-    namedWindow( "Canal1", CV_WINDOW_AUTOSIZE );
-    imshow( "Canal1", canal1);
+    namedWindow("Canal1", CV_WINDOW_AUTOSIZE);
+    imshow("Canal1", canal1);
 
-    namedWindow( "Canal2", CV_WINDOW_AUTOSIZE );
-    imshow( "Canal2", canal2);
+    namedWindow("Canal2", CV_WINDOW_AUTOSIZE);
+    imshow("Canal2", canal2);
 
-    namedWindow( "Canal3", CV_WINDOW_AUTOSIZE );
-    imshow( "Canal3", canal3);
+    namedWindow("Canal3", CV_WINDOW_AUTOSIZE);
+    imshow("Canal3", canal3);
+
+    Mat cont;
+
+    hconcat(canal1,canal2, cont);
+
+
+    namedWindow("Cont", CV_WINDOW_AUTOSIZE);
+    imshow("Cont", cont);
 
     waitKey(0);                                          // Wait for a keystroke in the window
     return 0;
