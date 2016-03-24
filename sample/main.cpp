@@ -45,6 +45,25 @@ int main( int argc, char** argv )
     namedWindow( "Corte", CV_WINDOW_AUTOSIZE );
     imshow( "Corte", corte);
 
+    vector<Mat> channels(3);
+
+    Mat canal1, canal2, canal3;
+
+    split (image, channels);
+
+    canal1 = channels[0];
+    canal2 = channels[1];
+    canal3 = channels[2];
+
+    namedWindow( "Canal1", CV_WINDOW_AUTOSIZE );
+    imshow( "Canal1", canal1);
+
+    namedWindow( "Canal2", CV_WINDOW_AUTOSIZE );
+    imshow( "Canal2", canal2);
+
+    namedWindow( "Canal3", CV_WINDOW_AUTOSIZE );
+    imshow( "Canal3", canal3);
+
     waitKey(0);                                          // Wait for a keystroke in the window
     return 0;
 }
