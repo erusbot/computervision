@@ -7,6 +7,8 @@
 #include "concatenate.h"
 #include "blend_image.h"
 #include "add_image.h"
+#include "scalar_image.h"
+#include "gaussian_noise.h"
 
 using namespace cv;
 using namespace std;
@@ -34,7 +36,7 @@ int main( int argc, char** argv )
 	//displayStatusBar("Original Image", "Teste",0);
 	// The actual splitting.
 	int option;
-	cout << "Menu\n0: Exit\n1: Informations\n2: Crop\n3: Isolate Channels(R,G,B)\n4: Concatenate\n5: Threshold\n6: Add Images\n7: Blend Images\n";
+	cout << "Menu\n0: Exit\n1: Informations\n2: Crop\n3: Isolate Channels(R,G,B)\n4: Concatenate\n5: Threshold\n6: Add Images\n7: Blend Images\n8: Scalar Images\n9: Noise";
 	cin >> option;
 	switch(option){
 		case 1:
@@ -84,6 +86,22 @@ int main( int argc, char** argv )
 		break;
 		case 7:
 			blend_image(image);
+		break;
+		case 8:
+			scalar_image(image);
+		break;
+		case 9:
+			cout << "Noise Menu:\n1: Gaussian\n2: Salt and Pepper\n3: Impulse\n";
+			cin >> option2;
+			switch(option2){
+				case 1:
+					gaussian_noise(image);
+				break;
+				case 2:
+				break;
+				case 3:
+				break;
+			}
 		break;
 	}
     // Create Matrices (make sure there is an image in input!)

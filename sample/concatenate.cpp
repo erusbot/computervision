@@ -26,5 +26,5 @@ if( !im2.data ) { printf("Error loading im2 \n"); return; }
 	im1.copyTo(left);
 	Mat right(im3, Rect(sz1.width, 0, sz2.width, sz2.height));
 	im2.copyTo(right);
-	imshow("im3", im3);
+	imshow("Concatenated Images", im3);
 }
