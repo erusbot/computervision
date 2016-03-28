@@ -104,89 +104,105 @@ void ImagemCinza(Mat image){
 int main( int argc, char** argv )
 {
 
-    int num;
+  int num;
 
-    if( argc < 2)
-    {
-     cout << "Tente passar uma imagem como argumento" << endl;
-     return -1;
-    }
+  if( argc < 2)
+  {
+   cout << "Tente passar uma imagem como argumento" << endl;
+   return -1;
+  }
 
-    image = imread(argv[1], CV_LOAD_IMAGE_COLOR);   // Ler imagem
+  image = imread(argv[1], CV_LOAD_IMAGE_COLOR);   // Ler imagem
 
-    if(! image.data )                              // Checar se realmente se trata de uma imagem
-    {
-        cout <<  "Problemas ao abrir ou ao encontrar a imagem" << endl ;
-        return -1;
-    }
+  if(! image.data )                              // Checar se realmente se trata de uma imagem
+  {
+      cout <<  "Problemas ao abrir ou ao encontrar a imagem" << endl ;
+      return -1;
+  }
 
-    namedWindow( "Original", WINDOW_AUTOSIZE );// Create a window for display.
-    imshow( "Original", image );   // Show our image inside it.
+  namedWindow( "Original", WINDOW_AUTOSIZE );// Create a window for display.
+  imshow( "Original", image );   // Show our image inside it.
 
-    ExibeInformacao(image);
-    CortaImagem(image);
-    SelecionaCanais(image);
-    ConcatenaImagens(image);
+///////////////////////////////////////////////////////////////////////////////
+  ExibeInformacao(image);
+  CortaImagem(image);
+  SelecionaCanais(image);
+  ConcatenaImagens(image);
+///////////////////////////////////////////////////////////////////////////////
+  Mat imagem2,res;
 
-    Mat imagem2,res;
+  imagem2 = imread(argv[2], CV_LOAD_IMAGE_COLOR);
 
-    imagem2 = imread(argv[2], CV_LOAD_IMAGE_COLOR);
+  res = imagem2 + image;
 
-    res = imagem2 + image;
+  namedWindow( "Soma", WINDOW_AUTOSIZE );// Create a window for display.
+  imshow( "Soma", res);
 
-    namedWindow( "Soma", WINDOW_AUTOSIZE );// Create a window for display.
-    imshow( "Soma", res);
+/////////////////////////////////////////////////////////////////////////
+  double alpha = 0.5; double beta;
 
+  Mat blend;
 
-    double alpha = 0.5; double beta;
+  namedWindow("Blende Efeito", 1);
 
-    Mat blend;
+  beta = ( 1.0 - alpha );
+  addWeighted( image, alpha, imagem2, beta, 0.0, blend);
 
+  imshow( "Blende Efeito", blend);
+//////////////////////////////////////////////////////////////////////////
+  Mat mult;
 
-    namedWindow("Blende Efeito", 1);
+  mult = image*0.3;
 
-    beta = ( 1.0 - alpha );
-    addWeighted( image, alpha, imagem2, beta, 0.0, blend);
+  namedWindow("Multiplicação", 1);
 
-    imshow( "Blende Efeito", blend);
+  imshow("Multiplicação", mult);
+/////////////////////////////////////////////////////////////////////////////////
 
-    Mat mult;
+  Mat gaus;
 
-    mult = image*0.3;
+  gaus = image.clone();
 
-    namedWindow("Multiplicação", 1);
+  randn(gaus, 30, 128);
 
-    imshow("Multiplicação", mult);
+  namedWindow("Gaus", 1);
+  imshow("Gaus",gaus);
 
-    //waitKey(0);
+////////////////////////////////////////////////////////////////////////////////
 
-    cvtColor( image, src_gray, CV_BGR2GRAY );
+  Mat desfocar;
 
-    /// Create a window to display results
-    namedWindow( window_name, CV_WINDOW_AUTOSIZE );
+  blur(image, desfocar, Size(120,30));
 
-    /// Create Trackbar to choose type of Threshold
-    createTrackbar( trackbar_type,
-                    window_name, &threshold_type,
-                    max_type, Threshold_Demo );
-
-    createTrackbar( trackbar_value,
-                    window_name, &threshold_value,
-                    max_value, Threshold_Demo );
-
-    /// Call the function to initialize
-    Threshold_Demo( 0, 0 );
-
-    /// Wait until user finishes program
-    while(true)
-    {
-      int c;
-      c = waitKey( 20 );
-      if( (char)c == 27 )
-        { break; }
-     }
+  namedWindow("Desfocar", 1);
+  imshow("Desfocar", desfocar);
 
 
+/////////////////////////////////////////////////////////////////////////////////
 
-    return 0;
+  cvtColor( image, src_gray, CV_BGR2GRAY );
+
+  namedWindow( window_name, CV_WINDOW_AUTOSIZE );
+
+  createTrackbar( trackbar_type,
+                  window_name, &threshold_type,
+                  max_type, Threshold_Demo );
+
+  createTrackbar( trackbar_value,
+                  window_name, &threshold_value,
+                  max_value, Threshold_Demo );
+
+  Threshold_Demo( 0, 0 );
+
+  while(true)
+  {
+    int c;
+    c = waitKey( 20 );
+    if( (char)c == 27 )
+      { break; }
+   }
+
+////////////////////////////////////////////////////////////////////////////////
+
+  return 0;
 }
