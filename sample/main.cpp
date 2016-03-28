@@ -106,7 +106,7 @@ int main( int argc, char** argv )
 
     int num;
 
-    if( argc != 2)
+    if( argc < 2)
     {
      cout << "Tente passar uma imagem como argumento" << endl;
      return -1;
@@ -127,6 +127,36 @@ int main( int argc, char** argv )
     CortaImagem(image);
     SelecionaCanais(image);
     ConcatenaImagens(image);
+
+    Mat imagem2,res;
+
+    imagem2 = imread(argv[2], CV_LOAD_IMAGE_COLOR);
+
+    res = imagem2 + image;
+
+    namedWindow( "Soma", WINDOW_AUTOSIZE );// Create a window for display.
+    imshow( "Soma", res);
+
+
+    double alpha = 0.5; double beta;
+
+    Mat blend;
+
+
+    namedWindow("Blende Efeito", 1);
+
+    beta = ( 1.0 - alpha );
+    addWeighted( image, alpha, imagem2, beta, 0.0, blend);
+
+    imshow( "Blende Efeito", blend);
+
+    Mat mult;
+
+    mult = image*0.3;
+
+    namedWindow("Multiplicação", 1);
+
+    imshow("Multiplicação", mult);
 
     //waitKey(0);
 
@@ -155,6 +185,8 @@ int main( int argc, char** argv )
       if( (char)c == 27 )
         { break; }
      }
+
+
 
     return 0;
 }
