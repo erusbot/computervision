@@ -7,71 +7,151 @@
 using namespace cv;
 using namespace std;
 
+void ExibeInformacao(Mat image){
+
+  cout << "Largura: " << image.cols << endl;
+  cout << "Altura: " << image.rows << endl;
+  cout << "Canais: " << image.channels() << endl;
+
+}
+
+void CortaImagem(Mat image){
+
+  Rect region = Rect(50, 50, 50, 50);
+  Mat corte = image(region);
+
+  namedWindow( "Corte", CV_WINDOW_AUTOSIZE );
+  imshow( "Corte", corte);
+  waitKey(0);
+
+}
+
+void SelecionaCanais(Mat image){
+
+  vector<Mat> channels(3);
+
+  Mat canal1, canal2, canal3;
+
+  split (image, channels);
+
+  canal1 = channels[0];
+  canal2 = channels[1];
+  canal3 = channels[2];
+
+  namedWindow("Canal1", CV_WINDOW_AUTOSIZE);
+  imshow("Canal1", canal1);
+
+  namedWindow("Canal2", CV_WINDOW_AUTOSIZE);
+  imshow("Canal2", canal2);
+
+  namedWindow("Canal3", CV_WINDOW_AUTOSIZE);
+  imshow("Canal3", canal3);
+
+  waitKey(0);
+
+}
+
+void ConcatenaImagens(Mat image){
+      Mat cont;
+
+      hconcat(image,image, cont);
+
+      namedWindow("Cont", CV_WINDOW_AUTOSIZE);
+      imshow("Cont", cont);
+      waitKey(0);
+}
+
+void Threshold(Mat image){
+
+
+
+}
+
+void ImagemCinza(Mat image){
+
+  Mat cinza;
+  cvtColor(image, cinza, CV_BGR2GRAY);
+
+  namedWindow( "Cinza", CV_WINDOW_AUTOSIZE );
+  imshow( "Cinza", cinza);
+  waitKey(0);
+}
+
 int main( int argc, char** argv )
 {
+
+    int num;
+
     if( argc != 2)
     {
-     cout <<" Usage: display_image ImageToLoadAndDisplay" << endl;
+     cout << "Tente passar uma imagem como argumento" << endl;
      return -1;
     }
 
     Mat image;
-    image = imread(argv[1], CV_LOAD_IMAGE_COLOR);   // Read the file
+    image = imread(argv[1], CV_LOAD_IMAGE_COLOR);   // Ler imagem
 
-    if(! image.data )                              // Check for invalid input
+    if(! image.data )                              // Checar se realmente se trata de uma imagem
     {
-        cout <<  "Could not open or find the image" << std::endl ;
+        cout <<  "Problemas ao abrir ou ao encontrar a imagem" << endl ;
         return -1;
     }
 
-
-    cout << "Largura: " << image.cols << std::endl;
-    cout << "Altura: " << image.rows << std::endl;
-    cout << "Canais: " << image.channels() << std::endl;
-
     namedWindow( "Original", WINDOW_AUTOSIZE );// Create a window for display.
     imshow( "Original", image );   // Show our image inside it.
+    waitKey(0);
 
+    while(1){
+      cout << "Escolha uma operacao:" << endl;
 
-    Mat cinza;
-    cvtColor(image, cinza, CV_BGR2GRAY);
+      cout << "1. Exibir informacoes da image" << endl;
 
-    namedWindow( "Cinza", CV_WINDOW_AUTOSIZE );
-    imshow( "Cinza", cinza);
+      cout << "2. Recortar uma parte da imagem" << endl;
 
-    Rect region = Rect(50, 50, 50, 50);
-    Mat corte = image(region);
+      cout << "3. Selecionar canais da imagem" << endl;
 
-    namedWindow( "Corte", CV_WINDOW_AUTOSIZE );
-    imshow( "Corte", corte);
+      cout << "4. Concatenar duas imagens" << endl;
 
-    vector<Mat> channels(3);
+      cout << "5. Imagem Cinza" << endl;
 
-    Mat canal1, canal2, canal3;
+      cout << "6. Threshold" << endl;
 
-    split (image, channels);
+      cout << "0. Sair" << endl;
 
-    canal1 = channels[0];
-    canal2 = channels[1];
-    canal3 = channels[2];
+      cin >> num;
 
-    namedWindow("Canal1", CV_WINDOW_AUTOSIZE);
-    imshow("Canal1", canal1);
+      if(num == 0)
+        break;
 
-    namedWindow("Canal2", CV_WINDOW_AUTOSIZE);
-    imshow("Canal2", canal2);
+      switch(num){
 
-    namedWindow("Canal3", CV_WINDOW_AUTOSIZE);
-    imshow("Canal3", canal3);
+        case 1:
+          ExibeInformacao(image);
+          break;
 
-    Mat cont;
+        case 2:
+          CortaImagem(image);
+          break;
 
-    hconcat(canal1,canal2, cont);
+        case 3:
+          SelecionaCanais(image);
+          break;
 
+        case 4:
+          ConcatenaImagens(image);
+          break;
 
-    namedWindow("Cont", CV_WINDOW_AUTOSIZE);
-    imshow("Cont", cont);
+        case 5:
+          ImagemCinza(image);
+          break;
 
-    waitKey(0);                                          // Wait for a keystroke in the window
+        case 6:
+
+          Threshold(image);
+
+      }
+
+  }
+    waitKey(0);                                      // Wait for a keystroke in the window
     return 0;
 }
