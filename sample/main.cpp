@@ -103,15 +103,6 @@ void ImagemCinza(Mat image){
 
 int main( int argc, char** argv )
 {
-<<<<<<< HEAD
-    if( argc != 2)
-    {
-     cout <<" Usage: main <IMAGE PATH>" << endl;
-     return -1;
-    }
-=======
->>>>>>> aadc22a149c405398431f2e81dc97a6b0fc17555
-
   int num;
 
   if( argc < 2)
@@ -184,6 +175,31 @@ int main( int argc, char** argv )
 
   namedWindow("Desfocar", 1);
   imshow("Desfocar", desfocar);
+
+  ///////////////////////////////////////////////////////////////////////////////
+
+  Mat saltpepper_noise = Mat::zeros(image.rows, image.cols,CV_8U);
+  randu(saltpepper_noise,0,255);
+
+  Mat black = saltpepper_noise < 30;
+  Mat white = saltpepper_noise > 225;
+
+  Mat saltpepper_img;
+
+  cvtColor(image, saltpepper_img,  CV_BGR2GRAY);
+
+  saltpepper_img.setTo(255,white);
+  saltpepper_img.setTo(0,black);
+
+  namedWindow("Sal e Pimenta", 1);
+  imshow("Sal e Pimenta", saltpepper_img);
+
+/////////////////////////////////////////////////////////////////////////////////
+
+Mat sruido;
+
+
+fastNlMeansDenoising();
 
 
 /////////////////////////////////////////////////////////////////////////////////
