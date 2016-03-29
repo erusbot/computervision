@@ -3,7 +3,7 @@
 //lib para usar cvtColor
 #include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
-
+// iniciando
 using namespace cv;
 using namespace std;
 
