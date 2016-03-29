@@ -1,3 +1,5 @@
+//Autor : rhuancaetano@gmail.com
+
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 //lib para usar cvtColor
