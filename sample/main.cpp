@@ -4,6 +4,7 @@
 #include <opencv2/highgui/highgui.hpp>
 //lib para usar cvtColor
 #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/photo/photo.hpp>
 #include <iostream>
 // iniciando
 using namespace cv;
@@ -104,6 +105,74 @@ void adjustImage(Mat image){
   Threshold_Function( 0, 0);
 }
 
+void addingImage(Mat im1, Mat im2){
+	Mat dst = im1 + im2;
+	namedWindow( "added Image", WINDOW_AUTOSIZE );// Create a window for display.
+  imshow( "added Image", dst ); 
+}
+
+void blending(Mat im1, Mat im2){	
+	double alpha, beta;
+	cout << "Digite os pesos de alpha e beta (double):" << endl;
+	cin >> alpha >> beta;
+	Mat dst;
+	// g(x) = alpha * im1 + beta * im2 ;
+	addWeighted( im1, alpha, im2, beta, 0.0, dst);
+	namedWindow( "blending Image", WINDOW_AUTOSIZE );// Create a window for display.
+  imshow( "blending Image", dst ); 
+}
+
+void scalarImage(Mat im1){
+	double n;	
+	cout << "Digite um escalar para multiplicar à imagem: (double)" << endl;
+	cin >> n;	
+	Mat dst = im1 * n;
+	namedWindow( "scalar Image", WINDOW_AUTOSIZE );// Create a window for display.
+  imshow( "scalar Image", dst ); 
+}
+
+void gaussianNoise(Mat img){
+	Mat gaussian_noise = img.clone();
+	randn(gaussian_noise,128,30);
+	namedWindow( "Gaussian Noise Image", WINDOW_AUTOSIZE );// Create a window for display.
+  imshow( "Gaussian Noise Image", gaussian_noise ); 
+}
+
+void saltPepperNoise(Mat img){
+	Mat aux = img.clone();
+	Mat saltpepper_noise = Mat::zeros(aux.rows, aux.cols,CV_8U);
+	randu(saltpepper_noise,0,255);
+
+	Mat black = saltpepper_noise < 30;
+	Mat white = saltpepper_noise > 225;
+
+	Mat saltpepper_img = img.clone();
+	saltpepper_img.setTo(255,white);
+	saltpepper_img.setTo(0,black);
+	namedWindow( "Salt Pepper Noise Image", WINDOW_AUTOSIZE );// Create a window for display.
+  imshow( "Salt Pepper Noise Image", saltpepper_img ); 
+}
+
+void desnoise(Mat img){
+	//Aplaing salt and pepper noise
+	Mat aux = img.clone();
+	Mat saltpepper_noise = Mat::zeros(aux.rows, aux.cols,CV_8U);
+	randu(saltpepper_noise,0,255);
+
+	Mat black = saltpepper_noise < 30;
+	Mat white = saltpepper_noise > 225;
+
+	Mat saltpepper_img = img.clone();
+	saltpepper_img.setTo(255,white);
+	saltpepper_img.setTo(0,black);
+	
+
+	//denoising
+	Mat desnoise;
+	fastNlMeansDenoisingColored(saltpepper_img, desnoise, 3, 3, 7 ,21);
+	namedWindow( "Desnoise Image", WINDOW_AUTOSIZE );// Create a window for display.
+  imshow( "Desnoise Image", desnoise); 
+}
 
 int main( int argc, char** argv ){
 	if( argc < 2)
@@ -114,7 +183,9 @@ int main( int argc, char** argv ){
 
     Mat image;
     image = imread(argv[1], CV_LOAD_IMAGE_COLOR);   // Read the file
- 
+ 		
+		
+
     if(! image.data )                              // Check for invalid input
     {
         cout <<  "Could not open or find the image" << std::endl ;
@@ -125,11 +196,20 @@ int main( int argc, char** argv ){
 	Size s = image.size();
 	cout << "Width: " << s.width << endl;
 	cout << "Height: " << s.height << endl;
-	
-        //adjustImage(image);
+	//Mat image2;
+  //image2 = imread(argv[2], CV_LOAD_IMAGE_COLOR);
+  //addingImage(image, image2);
+	//blending(image, image2);  
+
+  //adjustImage(image);
 	//concatenateImage(image, image);
 	//createCropImage(image);
-	//isolateChannelsImage(image);    
+	//isolateChannelsImage(image);
+	//scalarImage(image);	
+	//gaussianNoise(image);
+	//saltPepperNoise(image);
+	desnoise(image);
+	   
     
     namedWindow( "Original Image", WINDOW_AUTOSIZE );// Create a window for display.
     imshow( "Original Image", image );              // Show our image inside it.
