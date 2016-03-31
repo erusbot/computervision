@@ -1,3 +1,4 @@
+#include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp>
 #include <cv.h>
 #include <opencv2/highgui/highgui.hpp>
@@ -5,18 +6,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
 using namespace cv;
 using namespace std;
-
 
 int main( int argc, char** argv )
 {
 
   Mat image;
 
-  int num;
 
-  if( argc < 2)
+  if( argc < 1)
   {
    cout << "Tente passar uma imagem como argumento" << endl;
    return -1;
@@ -33,24 +33,12 @@ int main( int argc, char** argv )
   namedWindow( "Original", WINDOW_AUTOSIZE );
   imshow( "Original", image );
 
-  Mat saltpepper_noise = Mat::zeros(image.rows, image.cols,CV_8U);
-  randu(saltpepper_noise,0,255);
+  Mat rui;
 
-  Mat black = saltpepper_noise < 30;
-  Mat white = saltpepper_noise > 225;
+  fastNlMeansDenoising(image,rui, 3,7,21);
 
-  Mat saltpepper_img;
-
-  cvtColor(image, saltpepper_img, CV_BGR2GRAY);
-
-  saltpepper_img.setTo(255,white);
-  saltpepper_img.setTo(0,black);
-
-  namedWindow("Sal e Pimenta", 1);
-  imshow("Sal e Pimenta", saltpepper_img);
-
-
-  imwrite("ruido.jpg", saltpepper_img);
+  namedWindow( "Sem Ruido", WINDOW_AUTOSIZE );
+  imshow( "Sem Ruido", rui);
 
   waitKey(0);
 

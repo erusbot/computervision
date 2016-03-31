@@ -14,9 +14,12 @@ add_executable( recortar recortar.cpp )
 
 add_executable( sal sal.cpp )
 
+add_executable( ruido ruido.cpp )
+
 target_link_libraries( main ${OpenCV_LIBS} )
 target_link_libraries( threshold ${OpenCV_LIBS} )
 target_link_libraries( canais ${OpenCV_LIBS} )
 target_link_libraries( concatena ${OpenCV_LIBS} )
 target_link_libraries( recortar ${OpenCV_LIBS} )
 target_link_libraries( sal ${OpenCV_LIBS} )
+target_link_libraries( ruido ${OpenCV_LIBS} )
