@@ -6,4 +6,3 @@ set (LIBRARY_OUTPUT_PATH "${PROJECT_BINARY_DIR}/lib")
 set (EXECUTABLE_OUTPUT_PATH "${PROJECT_BINARY_DIR}/bin")
 
 include_directories (sample)
-add_subdirectory (sample)
